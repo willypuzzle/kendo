@@ -2,20 +2,20 @@
 
 Kendo Libraries are support kendo libraries backend in PHP/Laravel
 
-#Installation
+##Installation
 
 composer require willypuzzle/kendo
 
-#Service provider
+##Service provider
 
 Willypuzzle\Kendo\KendoServiceProvider::class
 
-#Configuration Publishing
+##Configuration Publishing
 
 For Grid:
 php artisan vendor:publish --tag=kendo_grid
 
-#Use:
+##Use:
 
 ```php
 use Willypuzzle\Kendo\Facades\Grid;
