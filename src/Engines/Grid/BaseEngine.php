@@ -9,7 +9,7 @@ use League\Fractal\Resource\Collection;
 use Willypuzzle\Kendo\Grid\Contracts\KendoGridEngineContract;
 use Willypuzzle\Kendo\Grid\Exception;
 use Willypuzzle\Kendo\Grid\Helper;
-use Yajra\Datatables\Processors\DataProcessor;
+use Willypuzzle\Kendo\Grid\Processors\DataProcessor;
 
 /**
  * Class BaseEngine.
