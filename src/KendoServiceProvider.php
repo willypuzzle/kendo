@@ -18,7 +18,7 @@ class KendoServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/kendo_grid.php.php', 'kendo_grid');
+        $this->mergeConfigFrom(__DIR__ . '/config/kendo_grid.php', 'kendo_grid');
 
         $this->publishes([
             __DIR__ . '/config/kendo_grid.php' => config_path('kendo_grid.php'),
