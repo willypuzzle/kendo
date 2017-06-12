@@ -129,6 +129,10 @@ class QueryBuilderEngine extends BaseEngine
     {
         $keyword = $this->request->keyword();
 
+        $filterArray = $this->request->filters();
+
+        $this->performMultiColumnFilter();
+
         if ($this->isSmartSearch()) {
             $this->smartGlobalSearch($keyword);
 
@@ -217,6 +221,82 @@ class QueryBuilderEngine extends BaseEngine
                 }
             }
         );
+    }
+
+    /**
+     * Perform multi column filter.
+     *
+     * @param string $keyword
+     */
+    public function performMultiColumnFilter(array $filters)
+    {
+        $this->query->where(
+            function ($query) use ($filters) {
+                $queryBuilder = $this->getQueryBuilder($query);
+
+                if(!isset($filters['logic']) || !isset($filters['filters']))
+                {
+                    return;
+                }
+
+                $mainOperator = $this->getMainLogicFunctionName($filters['logic']);
+                $mainArray = $filters['filters'];
+
+                foreach ($mainArray as $firstLevelFilter)
+                {
+                    $queryBuilder->$mainOperator(function ($query) use ($firstLevelFilter){
+                        if(!isset($firstLevelFilter['logic']) || !isset($firstLevelFilter['filters'])){
+                            return;
+                        }
+
+                        $localOperator = $this->getMainLogicFunctionName($firstLevelFilter['logic']);
+                        $localArray = $firstLevelFilter['filters'];
+                        foreach ($localArray as $secondLevelFilter){
+                            $query->$localOperator(function ($query) use ($secondLevelFilter){
+                                $this->buildMultiColumnFilterLine($query, $secondLevelFilter);
+                            });
+                        }
+                    });
+
+                }
+            }
+        );
+    }
+
+    /**
+     * Return main logic function name (it's used in QueryBuilder).
+     *
+     * @param  string $logic
+     * @return string
+     */
+    private function getMainLogicFunctionName($logic)
+    {
+        switch (trim($logic)){
+            case 'and':
+                return 'where';
+            case 'or':
+                return 'orWhere';
+            default:
+                throw new \Exception("{$logic} is a unknown operator");
+        }
+    }
+
+    /**
+     * Builds a single line in multi column filter.
+     *
+     * @param  \Illuminate\Database\Query\Builder $query
+     * @param array $queryData
+     * @return bool
+     */
+    private function buildMultiColumnFilterLine(&$query, array $queryData)
+    {
+        $field = isset($queryData['field']) ? $queryData['field'] : null;
+        $operator = isset($queryData['operator']) ? $queryData['operator'] : null;
+        $value = isset($queryData['value']) ? $queryData['value'] : null;
+
+        if(null == $field || null == $operator || null == $value){
+            throw new \Exception('Some important value is not set');
+        }
     }
 
     /**

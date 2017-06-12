@@ -89,7 +89,7 @@ class Request
      */
     public function isSearchable()
     {
-        return $this->request->input('search.value') != '';
+        return $this->request->input('search.value') != '' || $this->request->input('filter') != '';
     }
 
     /**
@@ -222,5 +222,14 @@ class Request
     public function isPaginationable()
     {
         return ! is_null($this->request->input('start')) && ! is_null($this->request->input('length')) && $this->request->input('length') != -1;
+    }
+
+    /**
+     * Get filter array.
+     *
+     * @return array
+     */
+    public function filters(){
+        return $this->request->input('filter');
     }
 }
