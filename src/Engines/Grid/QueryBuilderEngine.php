@@ -288,7 +288,7 @@ class QueryBuilderEngine extends BaseEngine
      *
      * @param  \Illuminate\Database\Query\Builder $query
      * @param array $queryData
-     * @return bool
+     * @return void
      */
     private function buildMultiColumnFilterLine(&$query, array $queryData)
     {
@@ -297,7 +297,8 @@ class QueryBuilderEngine extends BaseEngine
         $value = isset($queryData['value']) ? $queryData['value'] : null;
 
         if(null == $field || null == $operator || null == $value){
-            throw new \Exception('Some important value is not set');
+            Log::error("In ".__FILE__.': Line: '.__LINE__.": Some important value is not set");
+            return;
         }
 
         switch(trim($operator)){
@@ -332,11 +333,8 @@ class QueryBuilderEngine extends BaseEngine
                 $query->where($field, '<>', '');
                 break;
             default:
-                if(Environment::is(true, true, false)){
-                    throw new \Exception("{$operator} is unknown");
-                }else{
-                    Log::error("In ".__FILE__.': Line: '.__LINE__.": {$operator} is unknown");
-                }
+                Log::error("In ".__FILE__.': Line: '.__LINE__.": {$operator} is unknown");
+
         }
     }
 
