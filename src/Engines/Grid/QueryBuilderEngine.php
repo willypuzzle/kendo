@@ -133,7 +133,7 @@ class QueryBuilderEngine extends BaseEngine
 
         $filterArray = $this->request->filters();
 
-        $this->performMultiColumnFilter();
+        $this->performMultiColumnFilter($filterArray);
 
         if ($this->isSmartSearch()) {
             $this->smartGlobalSearch($keyword);
