@@ -142,7 +142,8 @@ class Request
      */
     public function isOrderable()
     {
-        return $this->request->input('order') && count($this->request->input('order')) > 0;
+        //return $this->request->input('order') && count($this->request->input('order')) > 0;
+        return $this->request->input('sort') && count($this->request->input('sort')) > 0;
     }
 
     /**
