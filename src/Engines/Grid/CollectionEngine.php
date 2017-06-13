@@ -39,6 +39,7 @@ class CollectionEngine extends BaseEngine
      */
     public function __construct(Collection $collection, Request $request)
     {
+        throw new \Exception("Library for collections is not still implemented, if you want, try. It's open source.");
         $this->request             = $request;
         $this->collection          = $collection;
         $this->original_collection = $collection;
