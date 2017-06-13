@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Willypuzzle\Helpers\Facades\General\Environment;
 use Willypuzzle\Kendo\Grid\Helper;
 use Willypuzzle\Kendo\Grid\Request;
 
@@ -245,16 +247,16 @@ class QueryBuilderEngine extends BaseEngine
                 foreach ($mainArray as $firstLevelFilter)
                 {
                     $queryBuilder->$mainOperator(function ($query) use ($firstLevelFilter){
-                        if(!isset($firstLevelFilter['logic']) || !isset($firstLevelFilter['filters'])){
-                            return;
-                        }
-
-                        $localOperator = $this->getMainLogicFunctionName($firstLevelFilter['logic']);
-                        $localArray = $firstLevelFilter['filters'];
-                        foreach ($localArray as $secondLevelFilter){
-                            $query->$localOperator(function ($query) use ($secondLevelFilter){
-                                $this->buildMultiColumnFilterLine($query, $secondLevelFilter);
-                            });
+                        if(isset($firstLevelFilter['logic']) && isset($firstLevelFilter['filters'])){
+                            $localOperator = $this->getMainLogicFunctionName($firstLevelFilter['logic']);
+                            $localArray = $firstLevelFilter['filters'];
+                            foreach ($localArray as $secondLevelFilter){
+                                $query->$localOperator(function ($query) use ($secondLevelFilter){
+                                    $this->buildMultiColumnFilterLine($query, $secondLevelFilter);
+                                });
+                            }
+                        }else{
+                            $this->buildMultiColumnFilterLine($query, $firstLevelFilter);
                         }
                     });
 
@@ -296,6 +298,33 @@ class QueryBuilderEngine extends BaseEngine
 
         if(null == $field || null == $operator || null == $value){
             throw new \Exception('Some important value is not set');
+        }
+
+        switch(trim($operator)){
+            case 'eq'://Equal
+                $query->where($field, $value);
+                break;
+            case 'neq'://Not Equal
+                $query->where($field, '<>', $value);
+                break;
+            case 'startswith':
+                $query->where($field, 'like', "{$value}%");
+                break;
+            case 'contains':
+                $query->where($field, 'like', "%{$value}%");
+                break;
+            case 'doesnotcontain':
+                $query->where($field, 'not like', "{$value}%");
+                break;
+            case 'endswith':
+                $query->where($field, 'like', "%{$value}");
+                break;
+            default:
+                if(Environment::is(true, true, false)){
+                    throw new \Exception("{$operator} is unknown");
+                }else{
+                    Log::error("In ".__FILE__.': Line: '.__LINE__.": {$operator} is unknown");
+                }
         }
     }
 

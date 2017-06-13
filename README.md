@@ -6,8 +6,9 @@ Kendo Libraries are support kendo libraries backend in PHP/Laravel
 
 composer require willypuzzle/kendo
 
-## Service provider
+## Service providers to add
 
+Willypuzzle\Helpers\GeneralServiceProvider::class
 Willypuzzle\Kendo\KendoServiceProvider::class
 
 ## Configuration Publishing
