@@ -319,6 +319,18 @@ class QueryBuilderEngine extends BaseEngine
             case 'endswith':
                 $query->where($field, 'like', "%{$value}");
                 break;
+            case 'isnull':
+                $query->whereNull($field);
+                break;
+            case 'isnotnull':
+                $query->whereNotNull($field);
+                break;
+            case 'isempty':
+                $query->where($field,  '');
+                break;
+            case 'isnotempty':
+                $query->where($field, '<>', '');
+                break;
             default:
                 if(Environment::is(true, true, false)){
                     throw new \Exception("{$operator} is unknown");
