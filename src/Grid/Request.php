@@ -114,15 +114,22 @@ class Request
             return [];
         }
 
-        $orderable = [];
-        for ($i = 0, $c = count($this->request->input('order')); $i < $c; $i++) {
-            //$order_col = (int) $this->request->input("order.$i.column");
-            $order_col = (int) $this->request->input("order.$i.field");
-            $order_dir = $this->request->input("order.$i.dir");
-            $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
+//        $orderable = [];
+//        for ($i = 0, $c = count($this->request->input('order')); $i < $c; $i++) {
+//            //$order_col = (int) $this->request->input("order.$i.column");
+//            $order_col = (int) $this->request->input("order.$i.field");
+//            $order_dir = $this->request->input("order.$i.dir");
 //            if ($this->isColumnOrderable($order_col)) {
 //                $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
 //            }
+//        }
+
+        $orderable = [];
+        for ($i = 0, $c = count($this->request->input('sort')); $i < $c; $i++) {
+            //$order_col = (int) $this->request->input("order.$i.column");
+            $order_col = $this->request->input("sort.$i.field");
+            $order_dir = $this->request->input("sort.$i.dir");
+            $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
         }
 
         return $orderable;
