@@ -506,11 +506,11 @@ abstract class BaseEngine implements KendoGridEngineContract
     public function make($mDataSupport = false, $orderFirst = false)
     {
         try {
+            $this->filterRecords();
             $this->totalRecords = $this->totalCount();
 
             if ($this->totalRecords) {
                 $this->orderRecords(!$orderFirst);
-                $this->filterRecords();
                 $this->orderRecords($orderFirst);
                 $this->paginate();
             }

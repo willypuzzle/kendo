@@ -314,7 +314,7 @@ class QueryBuilderEngine extends BaseEngine
                 $query->where($field, 'like', "%{$value}%");
                 break;
             case 'doesnotcontain':
-                $query->where($field, 'not like', "{$value}%");
+                $query->where($field, 'not like', "%{$value}%");
                 break;
             case 'endswith':
                 $query->where($field, 'like', "%{$value}");
