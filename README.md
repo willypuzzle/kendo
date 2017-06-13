@@ -8,8 +8,8 @@ composer require willypuzzle/kendo
 
 ## Service providers to add
 
-Willypuzzle\Helpers\GeneralServiceProvider::class
-Willypuzzle\Kendo\KendoServiceProvider::class
+* Willypuzzle\Helpers\GeneralServiceProvider::class
+* Willypuzzle\Kendo\KendoServiceProvider::class
 
 ## Configuration Publishing
 
