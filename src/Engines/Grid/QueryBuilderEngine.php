@@ -786,7 +786,8 @@ class QueryBuilderEngine extends BaseEngine
         }
 
         foreach ($this->request->orderableColumns() as $orderable) {
-            $column = $this->getColumnName($orderable['column'], true);
+            //$column = $this->getColumnName($orderable['column'], true);
+            $column = $orderable['column'];
 
             if ($this->isBlacklisted($column) && ! $this->hasCustomOrder($column)) {
                 continue;

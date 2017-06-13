@@ -119,9 +119,10 @@ class Request
             //$order_col = (int) $this->request->input("order.$i.column");
             $order_col = (int) $this->request->input("order.$i.field");
             $order_dir = $this->request->input("order.$i.dir");
-            if ($this->isColumnOrderable($order_col)) {
-                $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
-            }
+            $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
+//            if ($this->isColumnOrderable($order_col)) {
+//                $orderable[] = ['column' => $order_col, 'direction' => $order_dir];
+//            }
         }
 
         return $orderable;
@@ -143,10 +144,10 @@ class Request
      * @param  integer $index
      * @return bool
      */
-    public function isColumnOrderable($index)
-    {
-        return $this->request->input("columns.$index.orderable") == 'true';
-    }
+//    public function isColumnOrderable($index)
+//    {
+//        return $this->request->input("columns.$index.orderable") == 'true';
+//    }
 
     /**
      * Get searchable column indexes
