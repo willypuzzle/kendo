@@ -308,6 +308,18 @@ class QueryBuilderEngine extends BaseEngine
             case 'neq'://Not Equal
                 $query->where($field, '<>', $value);
                 break;
+            case 'gt':
+                $query->where($field, '>', $value);
+                break;
+            case 'gte':
+                $query->where($field, '>=', $value);
+                break;
+            case 'lt':
+                $query->where($field, '<', $value);
+                break;
+            case 'lte':
+                $query->where($field, '<=', $value);
+                break;
             case 'startswith':
                 $query->where($field, 'like', "{$value}%");
                 break;
